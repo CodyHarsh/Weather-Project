@@ -241,10 +241,8 @@ function showPosition(position) {
 
 
 function displayDaysData(data){
-    console.log(data);
-
     const dayDate = document.querySelectorAll(".next-day-date");
-    console.log(dayDate);
+
     const avgTemp = document.querySelectorAll(".next-day-avgTemp");
     const descriptionOfWeather = document.querySelectorAll(".next-day-description");
     const imgOfWeather = document.querySelectorAll(".next-days-weather");
