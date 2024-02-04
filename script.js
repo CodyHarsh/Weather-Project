@@ -6,11 +6,12 @@ const grantAccessContainer = document.querySelector(".grant-location-container")
 const searchForm = document.querySelector("[data-searchForm]");
 const loadingScreen = document.querySelector(".loading-container");
 const userInfoContainer = document.querySelector(".user-info-container");
-const nextDayTag = document.querySelector(".toogle-forecast");
+const nextDayTag = document.querySelector("[temprature-toggle]");
 
 const dataCelcius = document.querySelector("[data-celcius]");
 const dataFaheranite = document.querySelector("[data-faheranite]")
 const toggleTempratureUnits = document.querySelector("[temprature-toggle]")
+const fiveDayForecast = document.querySelector("[five-day-forecast]");
 //initially vairables need????
 
 let oldTab = userTab;
@@ -18,7 +19,7 @@ let oldTempUnit = dataCelcius;
 const API_KEY = "d1845658f92b31c64bd94f06f7188c9c";
 oldTab.classList.add("current-tab");
 oldTempUnit.classList.add("current-tab");
-toggleTempratureUnits.classList.remove("active");
+fiveDayForecast.classList.remove("active");
 getfromSessionStorage();
 
 
@@ -28,7 +29,7 @@ apiErrorMsg.classList.remove("active");
 
 
 function switchTempratureUnits(newTempUnit){
-    if(newTempUnit !== oldTempUnit){
+    if(newTempUnit != oldTempUnit){
         oldTempUnit.classList.remove("current-tab");
         newTempUnit.classList.add("current-tab");
         oldTempUnit = newTempUnit;   
@@ -50,15 +51,15 @@ function changeTheTemprature(newTempUnit){
     if(newTempUnit === dataCelcius){
         //Converting  faherantite to celcius:
         const tempValue = temp.innerHTML.split(" ")[0];
-        minimumTempratureValue = minimumTemprature.innerHTML.split(" ")[0];
-        maximumTempratureValue = maximumTemprature.innerHTML.split(" ")[0];
+        let minimumTempratureValue = minimumTemprature.innerHTML.split(" ")[0];
+        let maximumTempratureValue = maximumTemprature.innerHTML.split(" ")[0];
 
         minimumTemprature.innerHTML = `${fahrenheitToCelsius(minimumTempratureValue).toFixed(2)} °C`
         maximumTemprature.innerHTML = `${fahrenheitToCelsius(maximumTempratureValue).toFixed(2)} °C`
         temp.innerHTML = `${fahrenheitToCelsius(tempValue).toFixed(2)} °C`;
 
         //iterating over teh avgTemp Values
-        for(let i = 0; i<5; i++){
+        for(let i = 0; i<avgTemp.length; i++){
             const avgTempValue= avgTemp[i].innerHTML.split(" ")[0];
             avgTemp[i].innerHTML = `${fahrenheitToCelsius(avgTempValue).toFixed(2)} °C`;
         }
@@ -67,8 +68,8 @@ function changeTheTemprature(newTempUnit){
         //converting celcius to faheranite:
         const tempValue = temp.innerHTML.split(" ")[0];
         temp.innerHTML = `${celsiusToFahrenheit(tempValue).toFixed(2)} °F`;
-        minimumTempratureValue = minimumTemprature.innerHTML.split(" ")[0];
-        maximumTempratureValue = maximumTemprature.innerHTML.split(" ")[0];
+        let minimumTempratureValue = minimumTemprature.innerHTML.split(" ")[0];
+        let maximumTempratureValue = maximumTemprature.innerHTML.split(" ")[0];
 
         minimumTemprature.innerHTML = `${celsiusToFahrenheit(minimumTempratureValue).toFixed(2)} °F`
         maximumTemprature.innerHTML = `${celsiusToFahrenheit(maximumTempratureValue).toFixed(2)} °F`
@@ -240,31 +241,33 @@ function showPosition(position) {
 
 
 function displayDaysData(data){
-
+    console.log(data);
 
     const dayDate = document.querySelectorAll(".next-day-date");
+    console.log(dayDate);
     const avgTemp = document.querySelectorAll(".next-day-avgTemp");
     const descriptionOfWeather = document.querySelectorAll(".next-day-description");
-    const imgOfWeather = document.querySelectorAll(".next-days-weather")
+    const imgOfWeather = document.querySelectorAll(".next-days-weather");
 
-    const weatherDay = document.querySelectorAll(".weather-day");
     const daysList = data.list;
     let prevDate = daysList[0].dt_txt.split(" ")[0];
     let j = 0;
     for(let days = 0; days<data.cnt-1; days++){
         const nextDate = daysList[days + 1].dt_txt.split(" ");
-        if(days == data.cnt-2 || prevDate !== nextDate[0]){
+        if((days == data.cnt-2 || prevDate !== nextDate[0]) && j < 5){
             const avgTemprature  = ((daysList[days].main.temp_min) + (daysList[days].main.temp_max))/2;
-                avgTemp[j].innerHTML = `${avgTemprature.toFixed(2)} °C`;
-                dayDate[j].innerHTML = new Date(prevDate).toDateString().slice(0, 10);
-                descriptionOfWeather[j].innerHTML = daysList[days].weather[0].description;
-                imgOfWeather[j].src = `http://openweathermap.org/img/w/${daysList[days]?.weather?.[0]?.icon}.png`;
-                j++;
-                prevDate = nextDate[0];
+            
+            avgTemp[j].innerHTML = `${avgTemprature.toFixed(2)} °C`;
+            dayDate[j].innerHTML = new Date(prevDate).toDateString().slice(0, 10);
+            descriptionOfWeather[j].innerHTML = daysList[days].weather[0].description;
+            imgOfWeather[j].src = `http://openweathermap.org/img/w/${daysList[days]?.weather?.[0]?.icon}.png`;
+            j++;
+            prevDate = nextDate[0];
         }
     }
     
-    nextDayTag.classList.add("active")
+    nextDayTag.classList.add("active");
+    fiveDayForecast.classList.add("active");
     toggleTempratureUnits.classList.add("active")
 }
 

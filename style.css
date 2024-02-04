@@ -48,7 +48,9 @@ h1 {
     border-radius: 4px;
 }
 
-.tab-toggle-Temprature.active{
+
+.tab-toggle-temprature.active{
+    display: flex;
     width:90%;
     max-width: 300px;
     padding: 10px;
@@ -57,12 +59,17 @@ h1 {
     margin: 0 auto;
     margin-top: 2rem;
     margin-bottom: 2rem;
-    display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
 }
 
-.tab-toggle-Temprature{
+
+.tab-toggle-temprature{
+    display: none;
+}
+
+
+.tab-toggle-temprature{
     display: none;
 }
 
@@ -321,6 +328,5 @@ h1 {
 .toogle-forecast.active{
     display: flex;
 }
-
 
 
