@@ -85,6 +85,7 @@ function changeTheTemprature(newTempUnit){
 
 function switchTab(newTab) {
     if(newTab != oldTab) {
+        fiveDayForecast.classList.remove("active");
         switchTempratureUnits(dataCelcius);
         toggleTempratureUnits.classList.remove("active");
         nextDayTag.classList.remove("active");
